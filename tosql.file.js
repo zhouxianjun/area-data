@@ -10,24 +10,24 @@ Object.keys(root).forEach(p => {
     result.push({
         code: p,
         province: p.substring(0, 2),
-        city: '00',
-        county: '00',
+        city: p.substring(2, 4),
+        county: p.substring(4, 6),
         province_name: root[p]
     });
-    Object.keys(pcaa[p]).forEach(city => {
+    Object.keys(pcaa[p]).filter(c => !result.some(item => item.code === c)).forEach(city => {
         result.push({
             code: city,
-            province: p.substring(0, 2),
+            province: city.substring(0, 2),
             city: city.substring(2, 4),
-            county: '00',
+            county: city.substring(4, 6),
             province_name: root[p],
             city_name: pcaa[p][city]
         });
-        Object.keys(pcaa[city]).forEach(county => {
+        Object.keys(pcaa[city]).filter(c => c.length === 6 && !result.some(item => item.code === c)).forEach(county => {
             result.push({
                 code: county,
-                province: p.substring(0, 2),
-                city: city.substring(2, 4),
+                province: county.substring(0, 2),
+                city: county.substring(2, 4),
                 county: county.substring(4, 6),
                 province_name: root[p],
                 city_name: pcaa[p][city],
